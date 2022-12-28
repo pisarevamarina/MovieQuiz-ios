@@ -40,17 +40,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-                    return
-        }
+        guard let question = question else { return }
         currentQuestion = question
         showQuestion(question: question)
     }
    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
+        guard let currentQuestion = currentQuestion else { return }
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true, button: sender)
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -106,7 +102,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let bestGame = statisticService?.bestGame else {return}
             guard let totalAccuracy = statisticService?.totalAccuracy else {return}
 
-            let message = "Ваш результат: \(correctAnswers)/\(questionsAmount)\n Количество сыгранных квизов: \(gamesCount)\n Рекорд: \(bestGame.correct)/\(bestGame.total) \(bestGame.date.dateTimeString) \n Средняя точность: \(String(format: "%.2f", totalAccuracy))%"
+            let message = """
+                Ваш результат: \(correctAnswers)/\(questionsAmount)
+                Количество сыгранных квизов: \(gamesCount) Рекорд: \(bestGame.correct)/\(bestGame.total) \(bestGame.date.dateTimeString)
+                Средняя точность: \(String(format: "%.2f", totalAccuracy))%
+            """
             let alertModel = AlertModel(
                             title: "Этот раунд окончен!",
                             message: message,

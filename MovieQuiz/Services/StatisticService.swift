@@ -9,12 +9,10 @@ import Foundation
 
 final class StatisticServiceImplementation: StatisticService {
     var totalAccuracy: Double {
-            get {
-                let correctCount = Double(UserDefaults.standard.integer(forKey: Keys.correct.rawValue))
-                let total = Double(UserDefaults.standard.integer(forKey: Keys.total.rawValue))
-                return 100 * (correctCount / total)
-            }
-        }
+        let correctCount = Double(UserDefaults.standard.integer(forKey: Keys.correct.rawValue))
+        let total = Double(UserDefaults.standard.integer(forKey: Keys.total.rawValue))
+        return 100 * (correctCount / total)
+    }
     
     var correct: Int {
          return  UserDefaults.standard.integer(forKey: Keys.correct.rawValue)
