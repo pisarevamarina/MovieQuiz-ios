@@ -9,7 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private var correctAnswers: Int = 0
-    private var currentQuestion: QuizQuestion?
+    var currentQuestion: QuizQuestion?
     
     private var questionFactory: QuestionFactoryProtocol?
     private var alert: AlertPresenterProtocol?
@@ -20,12 +20,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
-        questionFactory?.requestNextQuestion()
-        
         alert = AlertPresenter(controller: self)
-        
+        presenter.viewController = self
         statisticService = StatisticServiceImplementation()
         
+        questionFactory?.requestNextQuestion()
         questionFactory?.loadData()
         showLoadingIndicator()
         
@@ -40,14 +39,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else { return }
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true, button: sender)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false, button: sender)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
     
     private func showQuestion(question: QuizQuestion) {
@@ -59,7 +56,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func showAnswerResult(isCorrect: Bool, button actionButton: UIButton) {
+    func showAnswerResult(isCorrect: Bool) {
         yesButton.isEnabled = false
         noButton.isEnabled = false
         
