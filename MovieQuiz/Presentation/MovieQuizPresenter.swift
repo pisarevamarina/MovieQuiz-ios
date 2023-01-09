@@ -15,7 +15,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     var correctAnswers: Int = 0
     weak var viewController: MovieQuizViewController?
     var questionFactory: QuestionFactoryProtocol?
-    var alert: AlertPresenterProtocol?
     var statisticService: StatisticService?
     
     init(viewController: MovieQuizViewController) {
@@ -44,6 +43,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func restartGame() {
         currentQuestionIndex = 0
         correctAnswers = 0
+        viewController?.enableButtons()
     }
     
     func switchToNextQuestion() {
@@ -53,7 +53,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     func didRecieveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
         currentQuestion = question
-        viewController?.showQuestion(question: question)
+        let viewModel = convert(model: question)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.showQuestion(quiz: viewModel)
+        }
     }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -67,9 +71,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private func didAnswer(givenAnswer: Bool) {
         guard let currentQuestion = currentQuestion else { return }
         let isCorrect = givenAnswer == currentQuestion.correctAnswer
-        viewController?.showAnswerResult(isCorrect: isCorrect)
-        
-        if isCorrect {
+        proceedWithAnswer(isCorrect: isCorrect)
+    }
+    
+    func didAnswer(isCorrectAnswer: Bool) {
+        if isCorrectAnswer {
             correctAnswers += 1
         }
     }
@@ -83,9 +89,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     private func proceedWithAnswer(isCorrect: Bool) {
-        didAnswer(givenAnswer: isCorrect)
+        didAnswer(isCorrectAnswer: isCorrect)
 
-        viewController?.showAnswerResult(isCorrect: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
@@ -114,10 +120,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
                                 self.restartGame()
                                 self.questionFactory?.requestNextQuestion()
                             })
-            alert?.showAlert(result: alertModel)
+            viewController?.showResultAlert(alertModel)
         } else {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
+            viewController?.enableButtons()
         }
     }
 }

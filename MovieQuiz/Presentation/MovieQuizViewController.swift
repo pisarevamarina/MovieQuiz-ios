@@ -17,8 +17,6 @@ final class MovieQuizViewController: UIViewController {
         presenter = MovieQuizPresenter(viewController: self)
         alert = AlertPresenter(controller: self)
         showLoadingIndicator()
-    
-        presenter.alert = alert
         
         imageView.layer.cornerRadius = 20
         imageView.layer.masksToBounds = true
@@ -31,31 +29,24 @@ final class MovieQuizViewController: UIViewController {
         presenter.noButtonClicked()
     }
     
-    func showQuestion(question: QuizQuestion) {
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.async { [weak self] in
-            self?.imageView.image = viewModel.image
-            self?.textLabel.text = viewModel.question
-            self?.counterLabel.text = viewModel.questionNumber
-        }
+    func showQuestion(quiz step: QuizStepViewModel) {
+        imageView.layer.borderColor = UIColor.clear.cgColor
+        imageView.image = step.image
+        textLabel.text = step.question
+        counterLabel.text = step.questionNumber
     }
     
-    func showAnswerResult(isCorrect: Bool) {
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         yesButton.isEnabled = false
         noButton.isEnabled = false
-        
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
-            
-            self.presenter.proceedToNextQuestionOrResults()
-            self.imageView.layer.borderWidth = 0
-            self.imageView.layer.borderColor = nil
-        }
+    }
+    
+    func enableButtons() {
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     func showLoadingIndicator() {
@@ -68,6 +59,10 @@ final class MovieQuizViewController: UIViewController {
         activityIndicator.stopAnimating()
     }
     
+    func showResultAlert(_ result: AlertModel) {
+        alert?.showAlert(result: result)
+    }
+    
     func showNetworkError(message: String) {
         hideLoadingIndicator()
         
@@ -78,7 +73,7 @@ final class MovieQuizViewController: UIViewController {
                             guard let self = self else { return }
                             self.presenter.questionFactory?.loadData()
                             self.showLoadingIndicator()
-                    }
+                        }
         alert?.showAlert(result: alertModel)
         presenter.restartGame()
     }
