@@ -13,6 +13,8 @@ struct AlertPresenter: AlertPresenterProtocol {
             message: result.message,
             preferredStyle: .alert)
 
+        alert.view.accessibilityIdentifier = "Results"
+
         let action = UIAlertAction(
             title: result.buttonText,
             style: .default,
@@ -20,7 +22,7 @@ struct AlertPresenter: AlertPresenterProtocol {
         )
 
         alert.addAction(action)
-        
+
         controller?.present(alert, animated: true, completion: nil)
 
     }
