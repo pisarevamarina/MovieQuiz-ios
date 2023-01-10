@@ -14,7 +14,7 @@ struct AlertPresenter: AlertPresenterProtocol {
             preferredStyle: .alert)
 
         let action = UIAlertAction(
-            title: "Сыграть еще раз",
+            title: result.buttonText,
             style: .default,
             handler: { _ in result.completion() }
         )

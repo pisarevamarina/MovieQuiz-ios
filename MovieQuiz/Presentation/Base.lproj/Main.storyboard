@@ -56,8 +56,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Of0-6e-IGr">
                                         <rect key="frame" x="0.0" y="624.5" width="374" height="111.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQ4-dT-ZVx" userLabel="Question Label">
-                                                <rect key="frame" x="42" y="13" width="245.5" height="85.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма больше чем 7?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQ4-dT-ZVx" userLabel="Question Label">
+                                                <rect key="frame" x="42" y="13" width="290" height="85.5"/>
                                                 <color key="tintColor" name="yp.White"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                                 <color key="textColor" name="yp.White"/>
@@ -65,7 +65,7 @@
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rQ4-dT-ZVx" secondAttribute="trailing" constant="20" symbolic="YES" id="38H-SH-B02"/>
+                                            <constraint firstAttribute="trailing" secondItem="rQ4-dT-ZVx" secondAttribute="trailing" constant="42" id="38H-SH-B02"/>
                                             <constraint firstItem="rQ4-dT-ZVx" firstAttribute="leading" secondItem="Of0-6e-IGr" secondAttribute="leading" constant="42" id="bGr-fI-6MF"/>
                                             <constraint firstAttribute="bottom" secondItem="rQ4-dT-ZVx" secondAttribute="bottom" constant="13" id="iHJ-zp-xuC"/>
                                             <constraint firstItem="rQ4-dT-ZVx" firstAttribute="top" secondItem="Of0-6e-IGr" secondAttribute="top" constant="13" id="jzV-6C-2Fp"/>
@@ -116,18 +116,27 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="GNs-d9-5iC" firstAttribute="centerX" secondItem="PS9-aE-aqz" secondAttribute="centerX" id="CMI-oI-7ca"/>
+                                </constraints>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="zOH-9U-4Gm">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="yp.Black"/>
                         <constraints>
+                            <constraint firstItem="zOH-9U-4Gm" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="4cQ-W2-MQy"/>
                             <constraint firstItem="PS9-aE-aqz" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="5Wx-Zy-xBK"/>
                             <constraint firstItem="PS9-aE-aqz" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="1" id="K5E-RE-bYt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PS9-aE-aqz" secondAttribute="trailing" constant="20" id="XGJ-Qf-pc5"/>
+                            <constraint firstItem="zOH-9U-4Gm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dFJ-Wu-fKN"/>
                             <constraint firstItem="PS9-aE-aqz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="jsB-jT-Jxf"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="zOH-9U-4Gm" id="spy-Pw-8nM"/>
                         <outlet property="counterLabel" destination="ycq-7Z-BBZ" id="R8H-bM-YSC"/>
                         <outlet property="imageView" destination="GNs-d9-5iC" id="DYQ-Kn-emi"/>
                         <outlet property="noButton" destination="1rM-gs-kEe" id="H1a-rc-7Ab"/>
